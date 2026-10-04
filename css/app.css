@@ -255,62 +255,50 @@ body.app-body {
   color: var(--red-1);
 }
 
+/* ==========================================================================\n   Installed mobile app mode\n   Keep the original 375px Figma coordinate system, but fit it to the real\n   device width. The real Android/iOS status bar is outside this canvas.\n   ========================================================================== */
 
-/* === PWA / real-device shell ============================================ */
-/* Figma에서는 375×817 아트보드를 유지하지만, 실제 휴대폰/PWA에서는 기기의
-   CSS viewport를 그대로 사용한다. 데스크톱 브라우저 미리보기는 기존 프레임 유지. */
-@media (max-width: 439px), (display-mode: standalone), (display-mode: fullscreen) {
-  :root {
-    --screen-w: 100vw;
-    --screen-h: 100vh;
-  }
-
-  @supports (height: 100dvh) {
-    :root { --screen-h: 100dvh; }
-  }
-
-  html,
-  body,
-  body.app-body {
-    width: 100%;
-    min-width: 0;
-    min-height: var(--screen-h);
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background: var(--white);
-    overscroll-behavior: none;
-  }
-
-  body.app-body {
-    display: block;
-  }
-
-  .app {
-    width: 100vw;
-    max-width: none;
-    height: var(--screen-h);
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .screen {
-    width: 100%;
-    max-width: none;
-    min-height: var(--screen-h);
-    margin: 0;
-  }
+html,
+body.app-body {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: var(--white);
 }
 
-/* 전체화면 설치 모드에서는 노치/제스처 영역과 디자인 상태바가 겹치지 않게 한다. */
-@media (display-mode: standalone), (display-mode: fullscreen) {
-  .statusbar {
-    height: calc(var(--statusbar-h) + env(safe-area-inset-top, 0px));
-    padding-top: env(safe-area-inset-top, 0px);
-  }
+body.app-body.is-phone {
+  display: block;
+  padding: 0;
+}
 
-  .navbar {
-    height: calc(var(--navbar-h) + env(safe-area-inset-bottom, 0px));
-    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-  }
+body.app-body.is-phone .app {
+  width: 375px;
+  height: var(--screen-h);
+  border-radius: 0;
+  box-shadow: none;
+  transform: scale(var(--app-scale, 1));
+  transform-origin: top left;
+}
+
+body.app-body.is-phone .screen {
+  width: 375px;
+  min-height: var(--screen-h);
+}
+
+/* On a desktop browser, retain the convenient centered phone preview. */
+body.app-body:not(.is-phone) .app {
+  width: 375px;
+  height: 781px;
+}
+
+body.app-body:not(.is-phone) .screen {
+  width: 375px;
+  min-height: 781px;
+}
+
+/* The system navigation area sits outside a standalone PWA on Android.
+   This keeps the in-app navigation's own 8px breathing room only. */
+body.app-body.is-phone .navbar {
+  padding-bottom: 8px;
 }

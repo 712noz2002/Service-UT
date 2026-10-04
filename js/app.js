@@ -112,6 +112,12 @@
 
     current = view || null;
     if (view && view.mount) view.mount(root, route.params);
+
+    /* In an installed PWA this colors the phone's REAL system status bar. */
+    var theme = document.querySelector('meta[name="theme-color"]');
+    if (theme) theme.setAttribute("content",
+      route.view === "home" || route.view === "records" ? "#0056ff" : "#ffffff");
+
     document.title = "안심ON" + (view && view.title ? " · " + view.title : "");
   }
 

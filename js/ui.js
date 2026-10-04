@@ -68,22 +68,11 @@ App.ui = (function () {
 
   /* --- shared chrome ----------------------------------------------------- */
 
-  function statusbar(onBlue) {
-    return '<div class="statusbar' + (onBlue ? " statusbar--on-blue" : "") + '">'
-      + "<span>" + clockLabel() + "</span>"
-      + '<span class="statusbar__glyphs">'
-      + '<span class="statusbar__bars"><i></i><i></i><i></i><i></i></span>'
-      + '<svg class="statusbar__wifi" viewBox="0 0 16 12" fill="none" aria-hidden="true">'
-      + '<path d="M1 4.2a10 10 0 0 1 14 0M3.4 6.9a6.5 6.5 0 0 1 9.2 0M5.8 9.5a3 3 0 0 1 4.4 0M8 11.4h.01"'
-      + ' stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
-      + '<span class="statusbar__battery"></span>'
-      + "</span></div>";
-  }
-
-  /* The artboard keeps the design's 9:41 rather than the visitor's clock,
-     so screenshots of the prototype match the Figma frames. */
-  function clockLabel() {
-    return "9:41";
+  /* Native mobile devices already provide the real system status bar.
+     The Figma prototype used to redraw 9:41 / signal / battery here; in the
+     installable app this helper intentionally renders nothing. */
+  function statusbar() {
+    return "";
   }
 
   var NAV = [

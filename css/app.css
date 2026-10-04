@@ -433,15 +433,3 @@ body.app-body.is-phone .supply-list {
     height: var(--screen-h);
   }
 }
-
-
-/* Android fullscreen exhibition mode: the browser/OS status + navigation bars
-   are hidden where fullscreen PWA display is supported. Keep content below a
-   small cutout-safe strip; iOS falls back to standalone. */
-@media (display-mode: fullscreen) {
-  body.app-body.is-phone {
-    padding-top: max(18px, env(safe-area-inset-top));
-    height: calc(100% - max(18px, env(safe-area-inset-top)));
-    background: var(--system-bar-bg, #ffffff);
-  }
-}

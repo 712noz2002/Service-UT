@@ -3,7 +3,7 @@
   "short_name": "안심ON",
   "start_url": "./index.html?v=6#/home",
   "scope": "./",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#0056ff",
@@ -19,9 +19,5 @@
       "type": "image/png"
     }
   ],
-  "id": "ansim-on-v6-fullscreen",
-  "display_override": [
-    "fullscreen",
-    "standalone"
-  ]
+  "id": "ansim-on-v6"
 }

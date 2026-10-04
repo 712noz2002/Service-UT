@@ -87,8 +87,8 @@
 
   /* --- Layout ----------------------------------------------------------- */
   --screen-w: 375px;
-  --screen-h: 781px;
+  --screen-h: 817px;
   --gutter: 20px;
-  --statusbar-h: 0px;
+  --statusbar-h: 36px;
   --navbar-h: 70px;
 }

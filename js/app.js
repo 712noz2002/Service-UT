@@ -88,9 +88,19 @@
 
   /* --- rendering --------------------------------------------------------- */
 
+  function applySystemTheme(viewName) {
+    var blue = viewName === "home" || viewName === "records";
+    var color = blue ? "#0056ff" : "#ffffff";
+    document.documentElement.style.setProperty("--system-bar-bg", color);
+    document.body.dataset.systemTheme = blue ? "blue" : "light";
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", color);
+  }
+
   function render() {
     var route = parse(location.hash);
     var view = App.views[route.view];
+    applySystemTheme(route.view);
 
     if (current && current.unmount) {
       try { current.unmount(); } catch (e) { /* view already gone */ }
@@ -112,9 +122,6 @@
 
     current = view || null;
     if (view && view.mount) view.mount(root, route.params);
-
-    var theme = document.querySelector('meta[name="theme-color"]');
-    if (theme) theme.setAttribute("content", route.view === "home" || route.view === "records" ? "#0056ff" : "#ffffff");
     document.title = "안심ON" + (view && view.title ? " · " + view.title : "");
   }
 

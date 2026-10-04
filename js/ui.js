@@ -68,10 +68,14 @@ App.ui = (function () {
 
   /* --- shared chrome ----------------------------------------------------- */
 
-  /* Real phones render their own system status bar. The prototype's
-     drawn 9:41 / signal / battery chrome must never appear in-app. */
   function statusbar() {
     return "";
+  }
+
+  /* The artboard keeps the design's 9:41 rather than the visitor's clock,
+     so screenshots of the prototype match the Figma frames. */
+  function clockLabel() {
+    return "9:41";
   }
 
   var NAV = [

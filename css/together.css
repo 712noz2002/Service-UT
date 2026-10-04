@@ -10,12 +10,12 @@
 
   /* 최신 함께ON 시안 (375 x 817)
      헤더 0~114 · 사진 114~504 · 분류 바 447~488 · 목록 504~ */
-  --room-head-h: 78px;
+  --room-head-h: 114px;
   --hero-h: 390px;
   --filter-zone: 57px;   /* 분류 바(41) + 사진 하단 여백(16) */
 
   /* 시트가 쉬는 두 위치 (시트 윗변 = 분류 바 윗변) */
-  --sheet-top: 447px;    /* = room-head-h + hero-h - filter-zone */
+  --sheet-top: 411px;    /* = room-head-h + hero-h - filter-zone */
   --sheet-top-open: 78px;
 }
 

@@ -255,64 +255,120 @@ body.app-body {
   color: var(--red-1);
 }
 
-
 /* ========================================================================== 
-   Real mobile viewport
-   - keeps the 375px design coordinate system
-   - uses CSS zoom (Chromium/Android) so layout dimensions scale too
-   - no fake phone frame, no fake status bar, no dead space under the nav
+   Mobile / installed PWA shell — v5
+   Do not scale the 375px Figma artboard. Real phones already provide roughly
+   the intended CSS-pixel size. The shell becomes fluid; the UI sizes stay true.
    ========================================================================== */
-html, body.app-body {
+html,
+body.app-body {
   width: 100%;
   height: 100%;
   min-height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: var(--white);
   overscroll-behavior: none;
 }
+
 body.app-body.is-phone {
   display: block;
   min-height: 0;
   padding: 0;
+  background: var(--system-bar-bg, #ffffff);
 }
+
 body.app-body.is-phone .app {
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: 375px;
-  height: var(--screen-h);
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 0;
   overflow: hidden;
   border-radius: 0;
   box-shadow: none;
-  zoom: var(--app-scale, 1);
+  background: var(--white);
 }
-body.app-body.is-phone .app__view,
-body.app-body.is-phone .screen {
-  width: 375px;
-  height: var(--screen-h);
-  min-height: var(--screen-h);
-}
-body.app-body.is-phone .statusbar { display: none !important; }
 
-/* The bottom navigation belongs to the app chrome, not the scroll document. */
-body.app-body.is-phone .app__view > .screen:not(.screen--together) {
-  padding-bottom: var(--navbar-h);
+@supports not (height: 100dvh) {
+  body.app-body.is-phone .app { height: 100%; }
 }
-body.app-body.is-phone .app__view > .screen > .navbar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+
+body.app-body.is-phone .app__view,
+body.app-body.is-phone .app__view > .screen {
   width: 100%;
-  margin-top: 0;
+  height: 100%;
+  min-height: 100%;
 }
-body.app-body.is-phone .app__view > .screen:not(.screen--together) > .sheet,
-body.app-body.is-phone .app__view > .screen:not(.screen--together) > .records-main,
-body.app-body.is-phone .app__view > .screen:not(.screen--together) > .ask-main {
-  min-height: 0;
+
+/* Fake Figma/iPhone chrome never appears on a real phone. */
+body.app-body.is-phone .statusbar {
+  display: none !important;
+}
+
+/* Keep the original sticky/in-flow navigation. Never absolutely overlay body
+   content: on shorter devices the screen can scroll instead of clipping text. */
+body.app-body.is-phone .app__view > .screen > .navbar {
+  width: 100%;
+  margin-top: auto;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  height: calc(var(--navbar-h) + env(safe-area-inset-bottom));
+  flex: none;
+}
+
+/* The original home hero included a 36px fake status bar. */
+body.app-body.is-phone .hero {
+  height: 306px;
+}
+
+/* Width becomes fluid, dimensions and typography do not scale. */
+body.app-body.is-phone .quick-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-right: var(--gutter);
+}
+body.app-body.is-phone .hero-card {
+  width: auto;
+  margin-left: 22px;
+  margin-right: var(--gutter);
+}
+body.app-body.is-phone .tabs > .tab,
+body.app-body.is-phone .tabs > .tab + .tab {
+  width: 50%;
+  margin-left: 0;
+}
+body.app-body.is-phone .tabs::before,
+body.app-body.is-phone .tabs--checks::before {
+  left: 50%;
+}
+body.app-body.is-phone .tabs--checks::before {
+  transform: translateX(-20px);
+}
+body.app-body.is-phone .notice {
+  width: calc(100vw - 42px);
+  max-width: 370px;
+}
+body.app-body.is-phone .composer {
+  width: calc(100% - 40px);
+  max-width: 370px;
+}
+body.app-body.is-phone .ask-card {
+  width: calc(100% - 42px);
+  max-width: 370px;
+}
+
+/* Together: original positions were measured from a frame that started with
+   the 36px fake status bar. The custom properties in together.css are shifted
+   by exactly 36px; all actual UI dimensions remain the original values. */
+body.app-body.is-phone .screen--together {
+  height: 100%;
+  min-height: 100%;
+}
+
+/* Records: preserve the original 510px card. No width/height zoom. */
+body.app-body.is-phone .screen--records,
+body.app-body.is-phone .ask {
+  height: 100%;
 }
 
 @media (min-width: 701px) {
-  body.app-body .app { zoom: 1; }
+  body.app-body .app { width: var(--screen-w); height: var(--screen-h); }
 }

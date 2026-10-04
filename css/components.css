@@ -32,7 +32,7 @@
 
 .hero {
   position: relative;
-  height: 306px;
+  height: 342px;
   background: linear-gradient(180deg, var(--primary-blue) 85.577%, var(--blue-deep) 100%);
   color: var(--white);
 }

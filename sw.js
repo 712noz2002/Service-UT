@@ -1,10 +1,12 @@
-const CACHE = 'ansim-on-v5-20261004';
+const CACHE = 'ansim-on-v6-20261004';
 const CORE = [
   './','./index.html','./manifest.webmanifest',
   './css/tokens.css','./css/base.css','./css/components.css','./css/icons.css',
   './css/home.css','./css/list.css','./css/ask.css','./css/together.css','./css/app.css',
   './js/mobile.js','./js/ui.js','./js/store.js','./js/data.js','./js/app.js',
-  './js/views/home.js','./js/views/records.js','./js/views/ask.js','./js/views/together.js'
+  './js/views/home.js','./js/views/records.js','./js/views/ask.js','./js/views/together.js',
+  './assets/img/room-together-1.jpg','./assets/img/room-together-2.jpg',
+  './assets/icons/app-icon-180.png','./assets/icons/app-icon-192.png','./assets/icons/app-icon-512.png'
 ];
 self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting())));
 self.addEventListener('activate', e => e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));

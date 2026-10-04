@@ -43,6 +43,7 @@
   }
 
   App.go = function (hash) {
+    if (maybeReloadForSystemTheme(hash)) return;
     if (location.hash === hash) render();
     else location.hash = hash;
   };
@@ -88,13 +89,40 @@
 
   /* --- rendering --------------------------------------------------------- */
 
+  function themeKindForView(viewName) {
+    return (viewName === "home" || viewName === "records") ? "blue" : "light";
+  }
+
   function applySystemTheme(viewName) {
-    var blue = viewName === "home" || viewName === "records";
-    var color = blue ? "#0056ff" : "#ffffff";
+    var kind = themeKindForView(viewName);
+    var color = kind === "blue" ? "#0056ff" : "#ffffff";
     document.documentElement.style.setProperty("--system-bar-bg", color);
-    document.body.dataset.systemTheme = blue ? "blue" : "light";
+    document.documentElement.classList.toggle("system-blue", kind === "blue");
+    document.documentElement.classList.toggle("system-light", kind === "light");
+    document.body.dataset.systemTheme = kind;
+    document.body.style.backgroundColor = color;
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", color);
+    if (meta) {
+      meta.setAttribute("content", color);
+      /* Some Android PWA shells only notice a replaced meta node. */
+      var clone = meta.cloneNode(true);
+      meta.parentNode.replaceChild(clone, meta);
+    }
+  }
+
+  function themeKindForHash(hash) {
+    var v = parse(hash).view;
+    return themeKindForView(v);
+  }
+
+  function maybeReloadForSystemTheme(hash) {
+    var currentKind = document.body.dataset.systemTheme || themeKindForView(parse(location.hash).view);
+    var nextKind = themeKindForHash(hash);
+    if (currentKind === nextKind) return false;
+    var base = location.href.split("#")[0].replace(/([?&])theme=[^&]*(&|$)/, '$1').replace(/[?&]$/, '');
+    var join = base.indexOf('?') === -1 ? '?' : '&';
+    location.href = base + join + 'theme=' + nextKind + hash;
+    return true;
   }
 
   function render() {
@@ -131,6 +159,15 @@
   /* --- global delegation -------------------------------------------------- */
 
   function onClick(e) {
+    var routeLink = e.target.closest('a[href^="#/"]');
+    if (routeLink) {
+      var href = routeLink.getAttribute("href");
+      if (href && maybeReloadForSystemTheme(href)) {
+        e.preventDefault();
+        return;
+      }
+    }
+
     var back = e.target.closest("[data-action='app-back']");
     if (back) {
       e.preventDefault();

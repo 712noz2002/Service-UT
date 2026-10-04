@@ -39,8 +39,8 @@
 
   /* Fallbacks for the sheet travel, in case the custom properties can't be
      read (older engines drop unknown custom properties from computed style). */
-  var SHEET_SHUT = 411;   // 필터 바 윗변 = 사진 아래 57px 위
-  var SHEET_OPEN = 78;   // 헤더 바로 아래
+  var SHEET_SHUT = 447;   // 필터 바 윗변 = 사진 아래 57px 위
+  var SHEET_OPEN = 114;   // 헤더 바로 아래
   var DRAG_THRESHOLD = 60;
 
   function seed() {

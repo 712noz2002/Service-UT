@@ -1,7 +1,7 @@
 {
   "name": "안심ON",
   "short_name": "안심ON",
-  "start_url": "./index.html?v=6#/home",
+  "start_url": "./index.html?v=4#/home",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -19,5 +19,5 @@
       "type": "image/png"
     }
   ],
-  "id": "ansim-on-v6"
+  "id": "ansim-on-v4"
 }

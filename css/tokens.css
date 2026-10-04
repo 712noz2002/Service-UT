@@ -87,7 +87,7 @@
 
   /* --- Layout ----------------------------------------------------------- */
   --screen-w: 375px;
-  --screen-h: 781px; /* 817px Figma frame minus the 36px mock status bar */
+  --screen-h: 781px;
   --gutter: 20px;
   --statusbar-h: 0px;
   --navbar-h: 70px;

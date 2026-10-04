@@ -68,9 +68,8 @@ App.ui = (function () {
 
   /* --- shared chrome ----------------------------------------------------- */
 
-  /* Native mobile devices already provide the real system status bar.
-     The Figma prototype used to redraw 9:41 / signal / battery here; in the
-     installable app this helper intentionally renders nothing. */
+  /* Real phones render their own system status bar. The prototype's
+     drawn 9:41 / signal / battery chrome must never appear in-app. */
   function statusbar() {
     return "";
   }

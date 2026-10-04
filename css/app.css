@@ -255,50 +255,64 @@ body.app-body {
   color: var(--red-1);
 }
 
-/* ==========================================================================\n   Installed mobile app mode\n   Keep the original 375px Figma coordinate system, but fit it to the real\n   device width. The real Android/iOS status bar is outside this canvas.\n   ========================================================================== */
 
-html,
-body.app-body {
+/* ========================================================================== 
+   Real mobile viewport
+   - keeps the 375px design coordinate system
+   - uses CSS zoom (Chromium/Android) so layout dimensions scale too
+   - no fake phone frame, no fake status bar, no dead space under the nav
+   ========================================================================== */
+html, body.app-body {
   width: 100%;
   height: 100%;
-  min-height: 0;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
-  overscroll-behavior: none;
   background: var(--white);
+  overscroll-behavior: none;
 }
-
 body.app-body.is-phone {
   display: block;
+  min-height: 0;
   padding: 0;
 }
-
 body.app-body.is-phone .app {
+  position: absolute;
+  inset: 0 auto auto 0;
   width: 375px;
   height: var(--screen-h);
+  overflow: hidden;
   border-radius: 0;
   box-shadow: none;
-  transform: scale(var(--app-scale, 1));
-  transform-origin: top left;
+  zoom: var(--app-scale, 1);
 }
-
+body.app-body.is-phone .app__view,
 body.app-body.is-phone .screen {
   width: 375px;
+  height: var(--screen-h);
   min-height: var(--screen-h);
 }
+body.app-body.is-phone .statusbar { display: none !important; }
 
-/* On a desktop browser, retain the convenient centered phone preview. */
-body.app-body:not(.is-phone) .app {
-  width: 375px;
-  height: 781px;
+/* The bottom navigation belongs to the app chrome, not the scroll document. */
+body.app-body.is-phone .app__view > .screen:not(.screen--together) {
+  padding-bottom: var(--navbar-h);
+}
+body.app-body.is-phone .app__view > .screen > .navbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  margin-top: 0;
+}
+body.app-body.is-phone .app__view > .screen:not(.screen--together) > .sheet,
+body.app-body.is-phone .app__view > .screen:not(.screen--together) > .records-main,
+body.app-body.is-phone .app__view > .screen:not(.screen--together) > .ask-main {
+  min-height: 0;
 }
 
-body.app-body:not(.is-phone) .screen {
-  width: 375px;
-  min-height: 781px;
-}
-
-/* The system navigation area sits outside a standalone PWA on Android.
-   This keeps the in-app navigation's own 8px breathing room only. */
-body.app-body.is-phone .navbar {
-  padding-bottom: 8px;
+@media (min-width: 701px) {
+  body.app-body .app { zoom: 1; }
 }
